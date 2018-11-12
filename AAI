@@ -2,19 +2,22 @@
 #include <string.h>
 
 typedef struct{
- char nome[50];
- int codigo;
- char dataNasc[10];
- char contrato;
- int qtdePlacas;
-}EstruturaPessoa;
-
-typedef struct{
   char placa[7];
   int codigo;
   char modelo[30];
   int ano;
 }EstruturaCarro;
+
+typedef struct{
+ char nome[50];
+ int codigo;
+ char dataNasc[10];
+ char contrato;
+ int qtdePlacas;
+ EstruturaCarro dadosDosCarros;
+}EstruturaPessoa;
+
+
 
 void menu();
 
@@ -83,6 +86,7 @@ void menu(){
 
 void cadastro(){
   int idade;
+  int qtdplaca;//mudar para uma constante depois
   do{
   printf("\nDigite seu nome");
   gets(EstruturaPessoa->nome);
@@ -108,7 +112,12 @@ if(EstruturaPessoa->contrato != D &&EstruturaPessoa->contrato != PEstruturaPesso
 printf("\nTipo de contrato invalido");
 }
 }while(EstruturaPessoa->contrato != D &&EstruturaPessoa->contrato != PEstruturaPessoa->contrato != M)
-
+do{
+printf("Quantidade de placas?");
+scanf("%d", &qtdplaca);
+if(qtdplaca > 5){
+printf("não deve ter mais do que 5 placas"); 
+}while(qtdplaca >5);
 
 
 }
