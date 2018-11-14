@@ -23,7 +23,7 @@ struct CARRO {
 struct PESSOA {
 	char nome[50];
 	int codigo;
-	char dataNasc[10];
+	char dataNasc[11];
 	char contrato;
 	int qtdPlaca;
 	EstruturaCarro *dadosDosCarros;
@@ -39,9 +39,9 @@ typedef struct INFO_LISTA {
 }EstruturaLista;
 
 
-void menu();
+void InterfaceUsuario();
 int concatINT(char s[], int inicio, int fim);
-void cadastroPessoa(EstruturaPessoa* *lista);
+EstruturaPessoa* cadastroPessoa(EstruturaPessoa* *lista);
 void cadastroCarro(EstruturaPessoa** lista);
 EstruturaPessoa* procurarPessoa(EstruturaPessoa* lista,int codigo);
 

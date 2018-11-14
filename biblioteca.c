@@ -13,8 +13,8 @@ const int MAX_PLACA = 5;
 #include <string.h>
 #include <math.h>
 
-void menu() {
-	EstruturaPessoa *lista = NULL;
+void InterfaceUsuario() {
+	EstruturaPessoa* lista = NULL;
 	char menu;
 	int submenu;
 	do {
@@ -27,7 +27,7 @@ void menu() {
 		fflush(stdin);
 		switch (menu) {
 		case 'A':
-			cadastroPessoa(&lista);
+			lista = cadastroPessoa(&lista);
 			break;
 		case 'B':
 			puts("\nQual Deseja Excluir?");
@@ -56,6 +56,11 @@ void menu() {
 			case 1:
 				break;
 			case 2:
+				puts("Digite o codigo do cliente: \n");
+				int codigo = 0;
+				scanf("%d", &codigo);
+				fflush(stdin);
+				procurarPessoa(lista, codigo);
 				break;
 			case 3:
 				break;
@@ -70,6 +75,7 @@ void menu() {
 			printf("\nInvalido");
 			break;
 		}
+
 	} while (menu != 'D');
 }
 int verificarData(char data[]) {
@@ -87,14 +93,14 @@ int verificarData(char data[]) {
 
 		ano = concatINT(data, 6, 9);
 
-		idade = (tm->tm_year+ 1900) - (ano );
+		idade = (tm->tm_year + 1900) - (ano);
 
 		if (tm->tm_mon < mes) {
 			idade--;
 		} else if (mes == tm->tm_mon && tm->tm_mday < dia) {
 			idade--;
 		}
-		printf("idade atual %d",idade);
+		printf("idade atual %d", idade);
 	}
 	return idade;
 }
@@ -102,8 +108,8 @@ int concatINT(char s[], int inicio, int fim) {
 	int r = 0;
 	int cont = 1;
 	int i;
-	int total = fim-inicio;
-	cont = pow(10,total);
+	int total = fim - inicio;
+	cont = pow(10, total);
 	for (i = inicio; i <= fim; i++) {
 		int c = (s[i] - '0'); //converte o char em numero inteiro
 		c *= cont;
@@ -132,10 +138,8 @@ void cadastroCarro(EstruturaPessoa **lista) {
 		novo->anterior = NULL;
 
 		x = concatINT(novo->placa, 3, 6);
-		x = CODIGO(x)
-		;
-		novo->codigo = CODIGO(x)
-		;
+		x = CODIGO(x);
+		novo->codigo = CODIGO(x);
 
 		(*lista)->dadosDosCarros = novo;
 		(*lista)->codigo = x;
@@ -151,11 +155,11 @@ void cadastroCarro(EstruturaPessoa **lista) {
 	puts("Carro cadastrado com sucesso");
 }
 
-void cadastroPessoa(EstruturaPessoa** lista) {
+EstruturaPessoa* cadastroPessoa(EstruturaPessoa** lista) {
 	EstruturaPessoa *novo = (EstruturaPessoa*) malloc(sizeof(EstruturaPessoa));
 	novo->dadosDosCarros = NULL;
 	int qtdplaca;
-	int idade=0;
+	int idade = 0;
 	do {
 		printf("\nDigite seu nome\n");
 		gets(novo->nome);
@@ -196,31 +200,60 @@ void cadastroPessoa(EstruturaPessoa** lista) {
 	for (i = 0; i < qtdplaca; i++) {
 		cadastroCarro(&novo);
 	}
-if((*lista)==NULL){
-(lista)= &novo;
-}else{
-novo->proximo = (*lista);
-novo->anterior = NULL;
+	if ((*lista) == NULL) {
+		(lista) = &novo;
+	} else {
+		novo->proximo = (*lista);
+		novo->anterior = NULL;
 
-if((*lista)->proximo != NULL){
-	(*lista)->proximo->anterior = novo;
-}}
-
-puts("Cliente Cadastrado com Sucesso!");
-}
-EstruturaPessoa* procurarPessoa(EstruturaPessoa* lista,int codigo){
-if((lista)== NULL){
-	puts("Lista Vazia");
-}
-	while((lista)->anterior!=NULL){
-		if((lista)->codigo == codigo){
-			puts("\nNOME: ");puts(lista->nome);
-			puts("\nData Nascimento: "); puts(lista->dataNasc);
-
-			return lista;
-		}else{
-			lista =lista->anterior;
+		if ((*lista)->proximo != NULL) {
+			(*lista)->proximo->anterior = novo;
 		}
+	}
+
+	puts("Cliente Cadastrado com Sucesso!");
+	return *lista;
 }
-return NULL;
+void imprimirTudo(EstruturaPessoa* lista) {
+	while( lista != NULL) { //falta passar pra recursividade
+		printf("\n\nNOME: %s\n", lista->nome);
+		printf("Codigo : %d", lista->codigo);
+		printf("Data de Nasc: %s", lista->dataNasc);
+		printf("Contrato: %c", lista->contrato);
+		printf("Quantidade de Placas: %d", lista->qtdPlaca);
+		EstruturaCarro tmp = lista->dadosDosCarros;
+		printf("\n---------------");
+		printf("\n----CARROS-----");
+
+		while (tmp != NULL) {//verifica se a variavel temporaria nao é nula
+			printf("---------------\n");
+			printf("Placa: %s\n", tmp.placa);
+			printf("Codigo : %d\n", tmp->codigo);
+			printf("Ano: %d\n", tmp->ano);
+			printf("Modelo: %s\n", tmp->modelo);
+			tmp = tmp->anterior;// volta o ponteiro para os dados do carro anterior
+		}
+		printf("----------------------\n");
+		printf("----FIM DOS CARROS----\n");
+
+	}
+}
+EstruturaPessoa* procurarPessoa(EstruturaPessoa* lista, int codigo) {
+	if ((lista) == NULL) {
+		puts("Lista Vazia");
+	} else if (lista->codigo == codigo) {
+		return lista;
+	} else
+		while ((lista)->anterior != NULL) {
+			if ((lista)->codigo == codigo) {
+				puts("\nNOME: ");
+				puts(lista->nome);
+				puts("\nData Nascimento: ");
+				puts(lista->dataNasc);
+				return lista;
+			} else {
+				lista = lista->anterior;
+			}
+		}
+	return NULL;
 }
