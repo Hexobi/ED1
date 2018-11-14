@@ -17,7 +17,7 @@ void menu() {
 	char menu;
 	int submenu;
 	do {
-		printf("\nDigite qual a opção desejada");
+		printf("\nDigite qual a opcao desejada");
 		printf("\nA-Inserir cliente");
 		printf("\nB-Excluir cliente");
 		printf("\nC-Relatorios");
@@ -195,7 +195,7 @@ void cadastroPessoa(EstruturaPessoa *lista) {
 		puts("\nQuantidade de placas?\n");
 		scanf("%d", &qtdplaca);
 		if (qtdplaca > MAX_PLACA) {
-			printf("não deve ter mais do que %d placas\n", MAX_PLACA);
+			printf("nao deve ter mais do que %d placas\n", MAX_PLACA);
 		}
 	} while (qtdplaca > MAX_PLACA);
 	int i;
