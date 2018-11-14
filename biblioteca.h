@@ -31,6 +31,14 @@ struct PESSOA {
 	EstruturaPessoa *proximo;
 	EstruturaPessoa *anterior;
 };
+
+typedef struct INFO_LISTA {
+dl_elemento *início;
+dl_elemento *fim;
+int tamanho;
+}EstruturaLista;
+
+
 void menu();
 int concatINT(char s[], int inicio, int fim);
 void cadastroPessoa(EstruturaPessoa *lista);

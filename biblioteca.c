@@ -105,7 +105,6 @@ int concatINT(char s[], int inicio, int fim) {
 		cont *= 10;
 	}
 	for (i = inicio; i <= fim; i++) {
-		//printf("char entrou como %c\n", s[i]);
 
 		int c = (s[i] - '0');
 
@@ -114,7 +113,6 @@ int concatINT(char s[], int inicio, int fim) {
 		r += c;
 		cont /= 10;
 	}
-//	printf("\na data é :%d\n", r);
 	return r;
 }
 
@@ -212,4 +210,9 @@ void cadastroPessoa(EstruturaPessoa *lista) {
 	*lista = *lista->proximo;
 	puts("Cliente Cadastrado");
 
+}
+void Inicializa(EstruturaLista *lista){
+lista->inicio = NULL;
+lista->fim = NULL;
+lista->tamanho = 0;
 }
