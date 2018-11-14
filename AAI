@@ -100,10 +100,11 @@ int concatINT(char s[], int inicio, int fim) {
 
 	int r = 0;
 	int cont = 1;
-	for (int i = 0; i < fim - inicio; i++) {
+	int i;
+	for (i = 0; i < fim - inicio; i++) {
 		cont *= 10;
 	}
-	for (int i = inicio; i <= fim; i++) {
+	for (i = inicio; i <= fim; i++) {
 		//printf("char entrou como %c\n", s[i]);
 
 		int c = (s[i] - '0');
@@ -117,37 +118,48 @@ int concatINT(char s[], int inicio, int fim) {
 	return r;
 }
 
-int cadastroCarro(EstruturaCarro *lista) {
+EstruturaPessoa cadastroCarro(EstruturaPessoa *lista) {
 	EstruturaCarro *novo = (EstruturaCarro*) malloc(sizeof(EstruturaCarro));
 	int x = 0;
 	puts("Digite a Placa do carro: ");
-	scanf("%s", &novo->placa);
+	fflush(stdin);
+	gets(novo->placa);
 
 	puts("Digite o ano do carro");
 	scanf("%d", &novo->ano);
+	fflush(stdin);
 	puts("Digite o modelo do carro");
 	gets(novo->modelo);
+	fflush(stdin);
 
-	if (lista == NULL) {
+	if (lista->dadosDosCarros == NULL) {
 		puts("Lista vazia");
 		novo->anterior = NULL;
 
 		x = concatINT(novo->placa, 3, 6);
-		x = CODIGO(x);
-		novo->codigo = CODIGO(x);
+		x = CODIGO(x)
+		;
+		novo->codigo = CODIGO(x)
+		;
 
-		*lista = *novo;
+		lista->dadosDosCarros = novo;
+		lista->codigo = x;
+
 	} else {
-		*novo->anterior = *lista;
-		novo->codigo = lista->codigo++;
-		*lista = *novo;
+
+		novo->anterior = lista->dadosDosCarros;
+		int tmp = lista->dadosDosCarros->codigo;
+		novo->codigo = tmp++;
+		lista->dadosDosCarros = novo;
 	}
+
 	puts("Carro cadastrado com sucesso");
-	return x;
+	return *lista;
 }
 
 void cadastroPessoa(EstruturaPessoa *lista) {
 	EstruturaPessoa *novo = (EstruturaPessoa*) malloc(sizeof(EstruturaPessoa));
+	novo->dadosDosCarros = NULL;
 	int qtdplaca;
 	int idade;
 	do {
@@ -186,16 +198,18 @@ void cadastroPessoa(EstruturaPessoa *lista) {
 			printf("não deve ter mais do que %d placas\n", MAX_PLACA);
 		}
 	} while (qtdplaca > MAX_PLACA);
-	int x = 0;
-	for (int i = 0; i < qtdplaca; i++) {
-		x = cadastroCarro(novo->dadosDosCarros);
-		if (i != 0) {
-			lista->codigo = x;
-		}
+	int i;
+	for (i = 0; i < qtdplaca; i++) {
+		*novo = cadastroCarro(novo);
 	}
+	puts("chegou aqui");
 	novo->anterior = lista;
-	lista->proximo = novo;
-	lista = lista->proximo;
-puts("Cliente Cadastrado");
+	puts("chegou aqui2");
+	novo->proximo = NULL;
+	puts("chegou aqui3");
+	*lista->proximo = *novo;
+	puts("deveria estar aq poar");
+	*lista = *lista->proximo;
+	puts("Cliente Cadastrado");
 
 }
