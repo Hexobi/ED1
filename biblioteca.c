@@ -26,7 +26,7 @@ void menu() {
 		fflush(stdin);
 		switch (menu) {
 		case 'A':
-			cadastroPessoa(lista);
+			cadastroPessoa(&lista);
 			break;
 		case 'B':
 			puts("\nQual Deseja Excluir?");
@@ -116,7 +116,7 @@ int concatINT(char s[], int inicio, int fim) {
 	return r;
 }
 
-EstruturaPessoa cadastroCarro(EstruturaPessoa *lista) {
+void cadastroCarro(EstruturaPessoa **lista) {
 	EstruturaCarro *novo = (EstruturaCarro*) malloc(sizeof(EstruturaCarro));
 	int x = 0;
 	puts("Digite a Placa do carro: ");
@@ -130,7 +130,7 @@ EstruturaPessoa cadastroCarro(EstruturaPessoa *lista) {
 	gets(novo->modelo);
 	fflush(stdin);
 
-	if (lista->dadosDosCarros == NULL) {
+	if ((*lista)->dadosDosCarros == NULL) {
 		puts("Lista vazia");
 		novo->anterior = NULL;
 
@@ -140,22 +140,21 @@ EstruturaPessoa cadastroCarro(EstruturaPessoa *lista) {
 		novo->codigo = CODIGO(x)
 		;
 
-		lista->dadosDosCarros = novo;
-		lista->codigo = x;
+		(*lista)->dadosDosCarros = novo;
+		(*lista)->codigo = x;
 
 	} else {
 
-		novo->anterior = lista->dadosDosCarros;
-		int tmp = lista->dadosDosCarros->codigo;
+		novo->anterior = (*lista)->dadosDosCarros;
+		int tmp = (*lista)->dadosDosCarros->codigo;
 		novo->codigo = tmp++;
-		lista->dadosDosCarros = novo;
+		(*lista)->dadosDosCarros = novo;
 	}
 
 	puts("Carro cadastrado com sucesso");
-	return *lista;
 }
 
-void cadastroPessoa(EstruturaPessoa *lista) {
+void cadastroPessoa(EstruturaPessoa** lista) {
 	EstruturaPessoa *novo = (EstruturaPessoa*) malloc(sizeof(EstruturaPessoa));
 	novo->dadosDosCarros = NULL;
 	int qtdplaca;
@@ -198,21 +197,17 @@ void cadastroPessoa(EstruturaPessoa *lista) {
 	} while (qtdplaca > MAX_PLACA);
 	int i;
 	for (i = 0; i < qtdplaca; i++) {
-		*novo = cadastroCarro(novo);
+		cadastroCarro(&novo);
 	}
-	puts("chegou aqui");
-	novo->anterior = lista;
-	puts("chegou aqui2");
-	novo->proximo = NULL;
-	puts("chegou aqui3");
-	*lista->proximo = *novo;
-	puts("deveria estar aq poar");
-	*lista = *lista->proximo;
-	puts("Cliente Cadastrado");
+if((*lista)==NULL){
+(lista)= &novo;
+}else{
+novo->proximo = (*lista);
+novo->anterior = NULL;
 
-}
-void Inicializa(EstruturaLista *lista){
-lista->inicio = NULL;
-lista->fim = NULL;
-lista->tamanho = 0;
+if((*lista)->proximo != NULL){
+	(*lista)->proximo->anterior = novo;
+}}
+
+puts("Cliente Cadastrado com Sucesso!");
 }

@@ -8,7 +8,7 @@
 #ifndef BIBLIOTECA_H_
 #define BIBLIOTECA_H_
 
-#define CODIGO(x) (x*100+1);
+#define CODIGO(x) (x*100+1)
 typedef struct CARRO EstruturaCarro;
 typedef struct PESSOA EstruturaPessoa;
 int verificarData(char data[]);
@@ -33,14 +33,15 @@ struct PESSOA {
 };
 
 typedef struct INFO_LISTA {
-dl_elemento *início;
-dl_elemento *fim;
-int tamanho;
+	EstruturaPessoa *primeiro;
+	EstruturaPessoa *ultimo;
+	int tamanho;
 }EstruturaLista;
 
 
 void menu();
 int concatINT(char s[], int inicio, int fim);
-void cadastroPessoa(EstruturaPessoa *lista);
-EstruturaPessoa cadastroCarro(EstruturaPessoa *lista);
+void cadastroPessoa(EstruturaPessoa* *lista);
+void cadastroCarro(EstruturaPessoa** lista);
+
 #endif /* BIBLIOTECA_H_ */
