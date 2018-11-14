@@ -34,5 +34,5 @@ struct PESSOA {
 void menu();
 int concatINT(char s[], int inicio, int fim);
 void cadastroPessoa(EstruturaPessoa *lista);
-int cadastroCarro(EstruturaCarro *lista);
+EstruturaPessoa cadastroCarro(EstruturaPessoa *lista);
 #endif /* BIBLIOTECA_H_ */
