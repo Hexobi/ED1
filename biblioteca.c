@@ -11,6 +11,7 @@ const int MAX_PLACA = 5;
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 
 void menu() {
 	EstruturaPessoa *lista = NULL;
@@ -21,7 +22,7 @@ void menu() {
 		printf("\nA-Inserir cliente");
 		printf("\nB-Excluir cliente");
 		printf("\nC-Relatorios");
-		printf("\nD-Finalizar");
+		printf("\nD-Finalizar\n");
 		scanf("%c", &menu);
 		fflush(stdin);
 		switch (menu) {
@@ -31,7 +32,7 @@ void menu() {
 		case 'B':
 			puts("\nQual Deseja Excluir?");
 			puts("\n1- Exclusao de cliente");
-			puts("\n2- Exclusao de placa");
+			puts("\n2- Exclusao de placa\n");
 			scanf("%d", &submenu);
 			fflush(stdin);
 			switch (submenu) {
@@ -45,10 +46,10 @@ void menu() {
 			}
 			break;
 		case 'C':
-			puts("\nQual Deseja Excluir?");
+			puts("\nQual Deseja Exibir?");
 			puts("\n1- Listar todos os clientes");
 			puts("\n2- Listar dados do cliente");
-			puts("\n3- Listar clientes por contrato");
+			puts("\n3- Listar clientes por contrato\n");
 			scanf("%d", &submenu);
 			fflush(stdin);
 			switch (submenu) {
@@ -59,7 +60,7 @@ void menu() {
 			case 3:
 				break;
 			default:
-				printf("\nInvalido");
+				puts("digite somete uma das opcoes");
 				break;
 			}
 			break;
@@ -76,7 +77,7 @@ int verificarData(char data[]) {
 	time_t now;
 	time(&now);
 	struct tm *tm = localtime(&now);
-// 01/34/5678
+// 01/34/6789
 	if (data[2] == '/' && data[5] == '/') {
 		//char* tmp = (char*) malloc(4 * sizeof(char));
 
@@ -85,31 +86,27 @@ int verificarData(char data[]) {
 		mes = concatINT(data, 3, 4);
 
 		ano = concatINT(data, 6, 9);
-		//	puts(tm->tm_year);
-		idade = (tm->tm_year) - ano + 1900;
+
+		idade = (tm->tm_year+ 1900) - (ano );
+
 		if (tm->tm_mon < mes) {
 			idade--;
 		} else if (mes == tm->tm_mon && tm->tm_mday < dia) {
 			idade--;
 		}
-
+		printf("idade atual %d",idade);
 	}
 	return idade;
 }
 int concatINT(char s[], int inicio, int fim) {
-
 	int r = 0;
 	int cont = 1;
 	int i;
-	for (i = 0; i < fim - inicio; i++) {
-		cont *= 10;
-	}
+	int total = fim-inicio;
+	cont = pow(10,total);
 	for (i = inicio; i <= fim; i++) {
-
-		int c = (s[i] - '0');
-
+		int c = (s[i] - '0'); //converte o char em numero inteiro
 		c *= cont;
-
 		r += c;
 		cont /= 10;
 	}
@@ -158,7 +155,7 @@ void cadastroPessoa(EstruturaPessoa** lista) {
 	EstruturaPessoa *novo = (EstruturaPessoa*) malloc(sizeof(EstruturaPessoa));
 	novo->dadosDosCarros = NULL;
 	int qtdplaca;
-	int idade;
+	int idade=0;
 	do {
 		printf("\nDigite seu nome\n");
 		gets(novo->nome);
@@ -171,10 +168,10 @@ void cadastroPessoa(EstruturaPessoa** lista) {
 		gets(novo->dataNasc);
 		idade = verificarData(novo->dataNasc);
 
-		if (idade <= 18 || idade >= 100) {
+		if (idade < 18 || idade >= 100) {
 			puts("\nidade invalida");
 		}
-	} while (idade <= 18 || idade >= 100);
+	} while (idade < 18 || idade >= 100);
 	do {
 		printf("\nQual o tipo do contrato?");
 		printf("\nD- Diaria");
@@ -210,4 +207,20 @@ if((*lista)->proximo != NULL){
 }}
 
 puts("Cliente Cadastrado com Sucesso!");
+}
+EstruturaPessoa* procurarPessoa(EstruturaPessoa* lista,int codigo){
+if((lista)== NULL){
+	puts("Lista Vazia");
+}
+	while((lista)->anterior!=NULL){
+		if((lista)->codigo == codigo){
+			puts("\nNOME: ");puts(lista->nome);
+			puts("\nData Nascimento: "); puts(lista->dataNasc);
+
+			return lista;
+		}else{
+			lista =lista->anterior;
+		}
+}
+return NULL;
 }
