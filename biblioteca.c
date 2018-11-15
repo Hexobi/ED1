@@ -120,15 +120,27 @@ int concatINT(char s[], int inicio, int fim) {
 }
 
 void cadastroCarro(EstruturaPessoa **lista) {
+
 	EstruturaCarro *novo = (EstruturaCarro*) malloc(sizeof(EstruturaCarro));
 	int x = 0;
-	puts("Digite a Placa do carro: ");
-	fflush(stdin);
-	gets(novo->placa);
-
-	puts("Digite o ano do carro");
+	int errado = 1;
+	while (errado) {
+		puts("Digite a Placa do carro: ");
+		fflush(stdin);
+		gets(novo->placa);
+		errado = consistePlaca(novo->placa);
+		if (errado) {
+			ERRO_ENTRADA;
+		}
+	}
+while(1){
+	 puts("Digite o ano do carro");
 	scanf("%d", &novo->ano);
 	fflush(stdin);
+	if (novo->ano < 1950 && novo->ano>2018) {
+		ERRO_ENTRADA;
+	}else break;
+}
 	puts("Digite o modelo do carro");
 	gets(novo->modelo);
 	fflush(stdin);
@@ -214,16 +226,15 @@ EstruturaPessoa* cadastroPessoa(EstruturaPessoa** lista) {
 	puts("Cliente Cadastrado com Sucesso!");
 	return *lista;
 }
-void ExcluirPessoa(EstruturaPessoa** pessoa){
-(*pessoa)->anterior
-		->proximo=(*pessoa)->proximo; 				// indica que o proximo do item excluido sera
-		 	 	 	 	 	 	 	 	 			//o proximo do item anterior a ele, tomando seu lugar
+void ExcluirPessoa(EstruturaPessoa** pessoa) {
+	(*pessoa)->anterior->proximo = (*pessoa)->proximo; // indica que o proximo do item excluido sera
+													   //o proximo do item anterior a ele, tomando seu lugar
 
-(*pessoa)->proximo									//indica que o item anterior ao excluido sera
-		->anterior = (*pessoa)->anterior; 			// o anterior ao proximo item dele, tomando seu lugar
+	(*pessoa)->proximo			//indica que o item anterior ao excluido sera
+	->anterior = (*pessoa)->anterior; // o anterior ao proximo item dele, tomando seu lugar
 
-								//ficando sem referencia, o item nao pode ser mais encontrado na lista
-(*pessoa) = (*pessoa)->proximo; //passamos para o proximo da lista, e perdemos a referencia ao item excluido.
+	//ficando sem referencia, o item nao pode ser mais encontrado na lista
+	(*pessoa) = (*pessoa)->proximo; //passamos para o proximo da lista, e perdemos a referencia ao item excluido.
 }
 void imprimeCarro(EstruturaCarro* carro) {
 	if (carro != NULL) {
@@ -270,4 +281,31 @@ EstruturaPessoa* procurarPessoaPorCodigo(EstruturaPessoa* lista, int codigo) {
 			}
 		}
 	return NULL;
+}
+int consistePlaca(char placa[]) {
+	int i = 0;
+	for (i = 0; i < 3; i++) {
+		if (!VerificaSeEhLetra(placa[i])) {
+			return 0;
+		}
+	}
+	for (i = 3; i < 7; i++) {
+		if (!VerificaSeEhNumero(placa[i])) {
+			return 0;
+		}
+	}
+	return 1;
+}
+int VerificaSeEhNumero(char c) {
+	if ((c <= 57 && c >= 48)) {
+		return 1;
+	} else
+		return 0;
+}
+
+int VerificaSeEhLetra(char c) {
+	if ((c <= 90 && c >= 65) || (c >= 97 && c <= 122)) {
+		return 1;
+	} else
+		return 0;
 }
