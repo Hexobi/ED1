@@ -60,7 +60,7 @@ void InterfaceUsuario() {
 				int codigo = 0;
 				scanf("%d", &codigo);
 				fflush(stdin);
-				procurarPessoa(lista, codigo);
+				procurarPessoaPorCodigo(lista, codigo);
 				break;
 			case 3:
 				break;
@@ -214,31 +214,45 @@ EstruturaPessoa* cadastroPessoa(EstruturaPessoa** lista) {
 	puts("Cliente Cadastrado com Sucesso!");
 	return *lista;
 }
+void ExcluirPessoa(EstruturaPessoa** pessoa){
+(*pessoa)->anterior
+		->proximo=(*pessoa)->proximo; 				// indica que o proximo do item excluido sera
+		 	 	 	 	 	 	 	 	 			//o proximo do item anterior a ele, tomando seu lugar
+
+(*pessoa)->proximo									//indica que o item anterior ao excluido sera
+		->anterior = (*pessoa)->anterior; 			// o anterior ao proximo item dele, tomando seu lugar
+
+								//ficando sem referencia, o item nao pode ser mais encontrado na lista
+(*pessoa) = (*pessoa)->proximo; //passamos para o proximo da lista, e perdemos a referencia ao item excluido.
+}
+void imprimeCarro(EstruturaCarro* carro) {
+	if (carro != NULL) {
+		printf("Placa: %s\n", carro->placa);
+		printf("Codigo : %d\n", carro->codigo);
+		printf("Ano: %d\n", carro->ano);
+		printf("Modelo: %s\n", carro->modelo);
+		imprimeCarro(carro->anterior); // volta o ponteiro para os dados do carro anterior
+	}
+}
 void imprimirTudo(EstruturaPessoa* lista) {
-	while( lista != NULL) { //falta passar pra recursividade
+	if (lista != NULL) {
+
 		printf("\n\nNOME: %s\n", lista->nome);
 		printf("Codigo : %d", lista->codigo);
 		printf("Data de Nasc: %s", lista->dataNasc);
 		printf("Contrato: %c", lista->contrato);
 		printf("Quantidade de Placas: %d", lista->qtdPlaca);
-		EstruturaCarro tmp = lista->dadosDosCarros;
+		EstruturaCarro* tmp = lista->dadosDosCarros;
 		printf("\n---------------");
 		printf("\n----CARROS-----");
-
-		while (tmp != NULL) {//verifica se a variavel temporaria nao é nula
-			printf("---------------\n");
-			printf("Placa: %s\n", tmp.placa);
-			printf("Codigo : %d\n", tmp->codigo);
-			printf("Ano: %d\n", tmp->ano);
-			printf("Modelo: %s\n", tmp->modelo);
-			tmp = tmp->anterior;// volta o ponteiro para os dados do carro anterior
-		}
+		imprimeCarro(tmp);
 		printf("----------------------\n");
 		printf("----FIM DOS CARROS----\n");
+		imprimirTudo(lista->proximo);
 
 	}
 }
-EstruturaPessoa* procurarPessoa(EstruturaPessoa* lista, int codigo) {
+EstruturaPessoa* procurarPessoaPorCodigo(EstruturaPessoa* lista, int codigo) {
 	if ((lista) == NULL) {
 		puts("Lista Vazia");
 	} else if (lista->codigo == codigo) {

@@ -43,6 +43,6 @@ void InterfaceUsuario();
 int concatINT(char s[], int inicio, int fim);
 EstruturaPessoa* cadastroPessoa(EstruturaPessoa* *lista);
 void cadastroCarro(EstruturaPessoa** lista);
-EstruturaPessoa* procurarPessoa(EstruturaPessoa* lista,int codigo);
+EstruturaPessoa* procurarPessoaPorCodigo(EstruturaPessoa* lista,int codigo);
 
 #endif /* BIBLIOTECA_H_ */
