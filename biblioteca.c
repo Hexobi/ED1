@@ -133,14 +133,17 @@ void cadastroCarro(EstruturaPessoa **lista) {
 			ERRO_ENTRADA;
 		}
 	}
-while(1){
-	 puts("Digite o ano do carro");
-	scanf("%d", &novo->ano);
-	fflush(stdin);
-	if (novo->ano < 1950 && novo->ano>2018) {
-		ERRO_ENTRADA;
-	}else break;
-}
+	errado = 1;
+	while (errado) {
+		puts("Digite o ano do carro");
+		scanf("%d", &novo->ano);
+		fflush(stdin);
+		errado = (novo->ano < 1950 && novo->ano > 2018);
+
+		if (errado)
+			ERRO_ENTRADA;
+
+	}
 	puts("Digite o modelo do carro");
 	gets(novo->modelo);
 	fflush(stdin);
@@ -204,10 +207,10 @@ EstruturaPessoa* cadastroPessoa(EstruturaPessoa** lista) {
 	do {
 		puts("\nQuantidade de placas?\n");
 		scanf("%d", &qtdplaca);
-		if (qtdplaca > MAX_PLACA) {
-			printf("nao deve ter mais do que %d placas\n", MAX_PLACA);
+		if (qtdplaca > MAX_PLACA&&qtdplaca<1) {
+			printf("nao deve ter mais do que %d placas\nPelo menos uma placa deve ser cadastrada!", MAX_PLACA);
 		}
-	} while (qtdplaca > MAX_PLACA);
+	} while (qtdplaca > MAX_PLACA&&qtdplaca<1);
 	int i;
 	for (i = 0; i < qtdplaca; i++) {
 		cadastroCarro(&novo);
