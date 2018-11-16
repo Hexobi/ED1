@@ -8,7 +8,8 @@
 #ifndef BIBLIOTECA_H_
 #define BIBLIOTECA_H_
 
-#define CODIGO(x) (x*100+1);
+#define ERRO_ENTRADA puts("Entrada de dados invalida!\n Digite Novamente\n")
+#define CODIGO(x) (x*100+1)
 typedef struct CARRO EstruturaCarro;
 typedef struct PESSOA EstruturaPessoa;
 int verificarData(char data[]);
@@ -23,7 +24,7 @@ struct CARRO {
 struct PESSOA {
 	char nome[50];
 	int codigo;
-	char dataNasc[10];
+	char dataNasc[11];
 	char contrato;
 	int qtdPlaca;
 	EstruturaCarro *dadosDosCarros;
@@ -31,8 +32,20 @@ struct PESSOA {
 	EstruturaPessoa *proximo;
 	EstruturaPessoa *anterior;
 };
-void menu();
+
+typedef struct INFO_LISTA {
+	EstruturaPessoa *primeiro;
+	EstruturaPessoa *ultimo;
+	int tamanho;
+}EstruturaLista;
+
+
+void InterfaceUsuario();
 int concatINT(char s[], int inicio, int fim);
-void cadastroPessoa(EstruturaPessoa *lista);
-EstruturaPessoa cadastroCarro(EstruturaPessoa *lista);
+EstruturaPessoa* cadastroPessoa(EstruturaPessoa* *lista);
+void cadastroCarro(EstruturaPessoa** lista);
+EstruturaPessoa* procurarPessoaPorCodigo(EstruturaPessoa* lista,int codigo);
+int VerificaSeEhLetra(char c);
+int VerificaSeEhNumero(char c);
+int consistePlaca(char c[]);
 #endif /* BIBLIOTECA_H_ */
