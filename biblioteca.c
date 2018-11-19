@@ -13,7 +13,7 @@ const int MAX_PLACA = 5;
 #include <string.h>
 #include <math.h>
 
-void InterfaceUsuario() {
+void interfaceUsuario() {
 	EstruturaPessoa* lista = NULL;
 	char menu;
 	int submenu;
@@ -54,6 +54,7 @@ void InterfaceUsuario() {
 			fflush(stdin);
 			switch (submenu) {
 			case 1:
+				imprimirTudo(lista);
 				break;
 			case 2:
 				puts("Digite o codigo do cliente: \n");
@@ -160,7 +161,6 @@ void cadastroCarro(EstruturaPessoa **lista) {
 		(*lista)->codigo = x;
 
 	} else {
-
 		novo->anterior = (*lista)->dadosDosCarros;
 		int tmp = (*lista)->dadosDosCarros->codigo;
 		novo->codigo = tmp++;
@@ -173,7 +173,6 @@ void cadastroCarro(EstruturaPessoa **lista) {
 EstruturaPessoa* cadastroPessoa(EstruturaPessoa** lista) {
 	EstruturaPessoa *novo = (EstruturaPessoa*) malloc(sizeof(EstruturaPessoa));
 	novo->dadosDosCarros = NULL;
-	int qtdplaca;
 	int idade = 0;
 	do {
 		printf("\nDigite seu nome\n");
@@ -206,24 +205,26 @@ EstruturaPessoa* cadastroPessoa(EstruturaPessoa** lista) {
 
 	do {
 		puts("\nQuantidade de placas?\n");
-		scanf("%d", &qtdplaca);
-		if (qtdplaca > MAX_PLACA&&qtdplaca<1) {
-			printf("nao deve ter mais do que %d placas\nPelo menos uma placa deve ser cadastrada!", MAX_PLACA);
+		scanf("%d", &novo->qtdPlaca);
+		fflush(stdin);
+		if ((novo->qtdPlaca) > MAX_PLACA || (novo->qtdPlaca) < 1) {
+			printf(
+					"nao deve ter mais do que %d placas\nPelo menos uma placa deve ser cadastrada!",
+					MAX_PLACA);
 		}
-	} while (qtdplaca > MAX_PLACA&&qtdplaca<1);
+	} while ((novo->qtdPlaca) > MAX_PLACA || (novo->qtdPlaca) < 1);
 	int i;
-	for (i = 0; i < qtdplaca; i++) {
+	for (i = 0; i < (novo->qtdPlaca); i++) {
 		cadastroCarro(&novo);
 	}
 	if ((*lista) == NULL) {
 		(lista) = &novo;
+		(*lista)->proximo = NULL;
 	} else {
-		novo->proximo = (*lista);
-		novo->anterior = NULL;
+		novo->anterior = (*lista);
+		novo->proximo = NULL;
 
-		if ((*lista)->proximo != NULL) {
-			(*lista)->proximo->anterior = novo;
-		}
+		(*lista)->proximo = novo;
 	}
 
 	puts("Cliente Cadastrado com Sucesso!");
@@ -246,19 +247,20 @@ void imprimeCarro(EstruturaCarro* carro) {
 		printf("Ano: %d\n", carro->ano);
 		printf("Modelo: %s\n", carro->modelo);
 		imprimeCarro(carro->anterior); // volta o ponteiro para os dados do carro anterior
+
 	}
 }
 void imprimirTudo(EstruturaPessoa* lista) {
 	if (lista != NULL) {
 
 		printf("\n\nNOME: %s\n", lista->nome);
-		printf("Codigo : %d", lista->codigo);
-		printf("Data de Nasc: %s", lista->dataNasc);
-		printf("Contrato: %c", lista->contrato);
-		printf("Quantidade de Placas: %d", lista->qtdPlaca);
+		printf("\nCodigo : %d", lista->codigo);
+		printf("\nData de Nasc: %s", lista->dataNasc);
+		printf("\nContrato: %c", lista->contrato);
+		printf("\nQuantidade de Placas: %d", lista->qtdPlaca);
 		EstruturaCarro* tmp = lista->dadosDosCarros;
 		printf("\n---------------");
-		printf("\n----CARROS-----");
+		printf("\n----CARROS-----\n");
 		imprimeCarro(tmp);
 		printf("----------------------\n");
 		printf("----FIM DOS CARROS----\n");
@@ -266,38 +268,35 @@ void imprimirTudo(EstruturaPessoa* lista) {
 
 	}
 }
+
 EstruturaPessoa* procurarPessoaPorCodigo(EstruturaPessoa* lista, int codigo) {
 	if ((lista) == NULL) {
 		puts("Lista Vazia");
+		return NULL;
 	} else if (lista->codigo == codigo) {
+		puts("\nNOME: ");
+		puts(lista->nome);
+		puts("\nData Nascimento: ");
+		puts(lista->dataNasc);
 		return lista;
-	} else
-		while ((lista)->anterior != NULL) {
-			if ((lista)->codigo == codigo) {
-				puts("\nNOME: ");
-				puts(lista->nome);
-				puts("\nData Nascimento: ");
-				puts(lista->dataNasc);
-				return lista;
-			} else {
-				lista = lista->anterior;
-			}
-		}
-	return NULL;
+	} else{
+		return procurarPessoaPorCodigo(lista->proximo, codigo);
+	}
+
 }
 int consistePlaca(char placa[]) {
 	int i = 0;
 	for (i = 0; i < 3; i++) {
 		if (!VerificaSeEhLetra(placa[i])) {
-			return 0;
+			return 1;
 		}
 	}
 	for (i = 3; i < 7; i++) {
 		if (!VerificaSeEhNumero(placa[i])) {
-			return 0;
+			return 1;
 		}
 	}
-	return 1;
+	return 0;
 }
 int VerificaSeEhNumero(char c) {
 	if ((c <= 57 && c >= 48)) {
