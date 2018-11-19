@@ -273,7 +273,7 @@ void imprimeCarro(EstruturaCarro* carro) {
 }
 
 
-//caso de merda//
+//código antigo
 /*void imprimirTudo(EstruturaPessoa* lista) {
 	if (lista != NULL) {
 
