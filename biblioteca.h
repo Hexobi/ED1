@@ -40,7 +40,7 @@ typedef struct INFO_LISTA {
 }EstruturaLista;
 
 
-void InterfaceUsuario();
+void interfaceUsuario();
 int concatINT(char s[], int inicio, int fim);
 EstruturaPessoa* cadastroPessoa(EstruturaPessoa* *lista);
 void cadastroCarro(EstruturaPessoa** lista);
@@ -48,4 +48,5 @@ EstruturaPessoa* procurarPessoaPorCodigo(EstruturaPessoa* lista,int codigo);
 int VerificaSeEhLetra(char c);
 int VerificaSeEhNumero(char c);
 int consistePlaca(char c[]);
+void imprimirTudo(EstruturaPessoa* lista);
 #endif /* BIBLIOTECA_H_ */
