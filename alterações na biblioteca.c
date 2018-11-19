@@ -121,7 +121,7 @@ int verificarData(char data[]) {
 		}
 		printf("idade atual %d", idade);
 	}
-	return idade;
+        return idade;
 }
 int concatINT(char s[], int inicio, int fim) {
 	int r = 0;
@@ -130,7 +130,7 @@ int concatINT(char s[], int inicio, int fim) {
 	int total = fim - inicio;
 	cont = pow(10, total);
 	for (i = inicio; i <= fim; i++) {
-		int c = (s[i] - '0'); //converte o char em numero inteiro
+		int c = (s[i] - '0'); //converte char em numero inteiro
 		c *= cont;
 		r += c;
 		cont /= 10;
